@@ -1,17 +1,13 @@
 # clojure101
 
-FIXME: write description
-
-## Usage
-
-FIXME: write
+Clojure 101 exercises
 
 ## Installation
 
-FIXME: write
+> lein deps
 
 ## License
 
-Copyright (C) 2010 FIXME
+Copyright (C) 2010 Eduard Bondarenko
 
 Distributed under the Eclipse Public License, the same as Clojure.
