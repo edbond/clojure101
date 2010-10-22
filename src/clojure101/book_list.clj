@@ -1,7 +1,8 @@
 (ns #^{:doc "The code for exercise 5 of week 1 of the RubyLearning.org 
             Clojure 101 course."
        :author "Daniel Solano Gómez"}
-  clojure101.book-list)
+  clojure101.book-list
+  (:use clojure.contrib.pprint))
 
 (defstruct #^{:doc "Basic structure for book information."}
   book :title :authors :price)
@@ -104,3 +105,11 @@
   (map print-book-keys best-sellers)
   (map print-book-authors best-sellers)
   (map print-book-as best-sellers))
+
+
+(defn print-books [& books]
+  (dorun (map print-book (flatten books)))
+  (print "\n=============\n")
+  (println "Printed information on"
+           (count (flatten books))
+           "books."))
