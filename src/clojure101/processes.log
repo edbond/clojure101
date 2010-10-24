@@ -1,0 +1,14 @@
+### username 2010-03-30 03:50:00 ###
+USER         COMM        PID      PPID   %CPU %MEM       TIME
+root         initd         1         0    0.0  0.0    1:30.26
+root         somed        11         1    0.0  0.0    1:35.31
+root         someotherd   12         1    0.0  0.0    1:36.48
+...
+username     aprog      1345      1208   10.8  7.0    2:47.13
+...
+
+### username 2010-03-30 04:00:00 ###
+USER         COMM       PID      PPID   %CPU %MEM       TIME
+root         initd        1         0    0.0  0.0    1:30.26
+root         somed       11         1    0.0  0.0    1:35.31
+...
