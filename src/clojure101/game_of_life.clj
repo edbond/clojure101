@@ -91,44 +91,55 @@
     (recur (next-population field) (dec n))))
 
 ;; GUI
-(def dim 40)
+(def dim 400)
 
 (defn render-field
-  [g]
-  (for [x (range 0 dim) y (range 0 dim) :when ([x y] @field)]
-    (doto g
+  [bg]
+  (for [x (range 0 dim) y (range 0 dim) :when (get @field [x y])]
+    (doto bg
       (.setColor (Color/blue))
-      (.fillRect x y 1 1))))
+      (.fillRect (+ x (/ dim 2)) (+ y (/ dim 2)) 1 1))))
 
 (defn render
   [g]
-  (let [v blinker
-        img (BufferedImage. dim dim
-                 (. BufferedImage TYPE_INT_ARGB))
+  (let [img (BufferedImage. dim dim
+                            (BufferedImage/TYPE_INT_ARGB))
         bg (.getGraphics img)]
     (doto bg
       (.setColor (Color/white))
-      (.fillRect 0 0 (. img (getWidth)) (. img (getHeight))))
-    (dorun
-     (render-field bg))
+      (.fillRect 0 0 (.getWidth img) (.getHeight img)))
+    (dorun (render-field bg))
     (.drawImage g img 0 0 nil)
     (.dispose bg)))
-
+  
 (def panel (doto (proxy [JPanel] []
                         (paint [g] (render g)))
              (.setPreferredSize (new Dimension 
                                      dim
                                      dim))))
 
+(def frame (doto (new JFrame) (.add panel) .pack .show))
+
+(def running (ref true))
 (def animation-sleep-ms 100)
-(def running (ref false))
 (def animator (agent nil))
+(def evolution-sleep-ms 100)
+(def evolutor (agent nil))
 
 (defn animation [x]
   (when @running
     (send-off *agent* #'animation))
   (.repaint panel)
-  (.sleep Thread animation-sleep-ms)
+  (Thread/sleep animation-sleep-ms)
   nil)
 
-;; (send-off animator animation)
+(defn evolution [x]
+  (when @running
+    (send-off *agent* #'evolution))
+  (dosync (alter field next-population))
+  (Thread/sleep evolution-sleep-ms))
+
+(comment
+  (dosync (ref-set field r-pentomino))
+  (send-off animator animation)
+  (send-off evolutor evolution))
